@@ -10,14 +10,23 @@ boot:
 	cli ; no interrupts
 	cld ; all that we need to init
 	call MovCursor
+
+	mov al, "D"
+	mov cx, 10
+	call PutChar
 	hlt ; halt the system
 
-MovCursor:
-	mov dh, 0x0
-	mov dl, 0x5
+MovCursor: ; dh: row, 
+		   ; dl: col
 	mov ah, 0x2
 	mov bh, 0x0
 
+	int 0x10
+	ret
+
+PutChar: ; al: character to write 
+		 ; cx: repeat count
+	mov ah, 0xe
 	int 0x10
 	ret
 
